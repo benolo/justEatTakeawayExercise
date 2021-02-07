@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">JustEatTakeAwayExercise</string>
+    <string name="open_state_opened">Open</string>
+    <string name="open_state_closed">Closed</string>
+    <string name="toolbarTitle">Browse restaurants</string>
+</resources>
