@@ -9,9 +9,7 @@ import com.justeattakeawayexercise.data.database.RestaurantDatabase
 import com.justeattakeawayexercise.data.source.local.RestaurantLocalDataSource
 import com.justeattakeawayexercise.data.source.remote.Mapper
 import com.justeattakeawayexercise.data.source.remote.RestaurantsRemoteDataSource
-import com.justeattakeawayexercise.provider.ResourceProvider
 import com.justeattakeawayexercise.ui.restaurants.mapper.RestaurantMapper
-import com.justeattakeawayexercise.ui.restaurants.view.RestaurantFragment
 import com.justeattakeawayexercise.ui.restaurants.viewmodel.RestaurantActivityViewModel
 import com.justeattakeawayexercise.ui.restaurants.viewmodel.RestaurantFragmentViewModel
 import okhttp3.OkHttpClient
@@ -46,8 +44,10 @@ val roomModule = module {
 }
 
 val viewModelModule = module {
-//    viewModel { RestaurantActivityViewModel(get()) }
-//    viewModel { RestaurantFragmentViewModel(get(), get()) }
+    viewModel { RestaurantActivityViewModel() }
+    viewModel { RestaurantFragmentViewModel(get(), get()) }
+//    single { RestaurantActivityViewModel() }
+//    single { RestaurantFragmentViewModel(get(), get()) }
 }
 
 val modules = module {
@@ -58,13 +58,13 @@ val modules = module {
     single { RestaurantLocalDataSource(get()) }
     single { RepositoryImpl(get(), get()) }
     single { BaseApplication() }
-    single { ResourceProvider(get()) }
     factory { RestaurantMapper() }
     single {
         Room.databaseBuilder(androidContext(), RestaurantDatabase::class.java, "restaurant").build()
     }
-    viewModel { RestaurantActivityViewModel() }
-    viewModel { RestaurantFragmentViewModel(get(), get()) }
+//    single { RestaurantActivityViewModel() }
+//    single { RestaurantFragmentViewModel(get(), get()) }
+
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

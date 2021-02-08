@@ -33,11 +33,9 @@ class RestaurantFragmentViewModel(
     }
 
     fun start() {
-        Log.d("benben", "frag view model start called")
         if (!isStarted) {
             isStarted = true
             viewModelScope.launch(exceptionHandler + Dispatchers.Main) {
-                Log.d("benben", "starting coroutine to load restaurants")
                 onLoaderInteractionRequestedLiveData.value = true
                 loadRestaurants()
             }
@@ -45,8 +43,8 @@ class RestaurantFragmentViewModel(
     }
 
     private suspend fun fetchFavorites() :List<Int> {
-        Log.d("benben", "fetch favorites invoked")
        return withContext(Dispatchers.IO) {
+           Log.d("benben", "In withContext fetchFavorites [${Thread.currentThread().name}]")
             return@withContext repository.getFavorites()
         }
     }
@@ -54,6 +52,7 @@ class RestaurantFragmentViewModel(
     private suspend fun fetchRestaurants() : List<Restaurant>{
         Log.d("benben", "fetch restaurants invoked")
         return withContext(Dispatchers.IO) {
+            Log.d("benben", "In withContext fetchRestaurants [${Thread.currentThread().name}]")
             return@withContext repository.getData()
         }
     }
@@ -77,13 +76,14 @@ class RestaurantFragmentViewModel(
         val resultList = restaurantsMapper.apply(allFavorites, allRestaurants)
 
         withContext(Dispatchers.Main) {
-            Log.d("benben", "dispatching data: $resultList")
+            Log.d("benben", "Fire live data load restaurants [${Thread.currentThread().name}]\n: $resultList")
             onLoaderInteractionRequestedLiveData.value = false
             onRestaurantsLoadedLiveData.value = resultList
         }
     }
 
     fun onFavoriteClicked(position: Int) {
+        Log.d("benben", "onfavorite item clicked")
         val itemClicked = onRestaurantsLoadedLiveData.value?.get(position)
         if (itemClicked != null) {
             viewModelScope.launch(Dispatchers.Main) {

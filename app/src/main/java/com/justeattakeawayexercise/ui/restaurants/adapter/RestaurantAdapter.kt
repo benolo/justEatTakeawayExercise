@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.justeattakeawayexercise.R
-import com.justeattakeawayexercise.data.model.Restaurant
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItem
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItemClickListener
 import com.squareup.picasso.Picasso
@@ -51,14 +50,18 @@ class RestaurantAdapter(
             restaurantItemClickListener.onItemFavoriteButtonClicked(position)
         }
 
-        holderRestaurant.itemView.setOnClickListener {
-            // Needed for deeper navigation
-        }
     }
 
     private fun setCoverageImage(view: ImageView, imageUri: Uri) {
         val context = view.context
-        Picasso.with(context).load(imageUri).placeholder(R.drawable.image_placeholder)
+        Picasso.with(context)
+            .load(imageUri)
+            .placeholder(R.drawable.image_placeholder)
+            .fit()
+            .centerInside()
+            .into(view)
+
+
     }
 
     private fun setOpeningStateText(context: Context, openingState: Boolean): String {
@@ -78,6 +81,8 @@ class RestaurantAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getItemCount() = restaurantItemList.size
+    override fun getItemCount(): Int {
+        return restaurantItemList.size
+    }
 
 }

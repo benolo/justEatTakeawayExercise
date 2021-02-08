@@ -5,6 +5,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <include layout="@layout/loader_layout"
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/restaurantsRecycler"
         android:layout_width="match_parent"
@@ -14,5 +23,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/restaurant_list_item"
         />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

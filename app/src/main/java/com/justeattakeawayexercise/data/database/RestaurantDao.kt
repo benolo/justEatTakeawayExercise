@@ -12,7 +12,7 @@ interface RestaurantDao {
     @Query("SELECT * FROM restaurant WHERE id = :restaurantId")
     fun getRestaurantById(restaurantId: Int): RestaurantEntity?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(entity: RestaurantEntity)
 
     @Delete

@@ -3,5 +3,5 @@
     <string name="open_state_opened">Open</string>
     <string name="open_state_closed">Closed</string>
     <string name="toolbarTitle">Browse restaurants</string>
-    <string name="minimum_order_pattern">Minimum order value: $d</string>
+    <string name="minimum_order_pattern">Minimum order value: %d</string>
 </resources>

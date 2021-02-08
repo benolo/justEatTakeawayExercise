@@ -12,7 +12,7 @@ class BaseApplication: Application() {
         startKoin {
             androidContext(this@BaseApplication)
 //            modules(listOf(networkModule, dataModule, viewModelModule, resourceModule, roomModule))
-            modules(modules)
+            modules(listOf(modules, viewModelModule))
         }
     }
 }
