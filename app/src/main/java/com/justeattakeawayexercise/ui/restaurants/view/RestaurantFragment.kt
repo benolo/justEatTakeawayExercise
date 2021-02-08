@@ -24,7 +24,6 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: RestaurantAdapter
-    private lateinit var recyclerView: RecyclerView
 
     companion object {
 
@@ -45,6 +44,7 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         viewModel.start()
         observe()
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -78,7 +78,6 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         } else {
             adapter = RestaurantAdapter(restaurantsList, this)
             restaurantsRecycler.adapter = adapter
-            recyclerView.adapter = adapter
         }
     }
 

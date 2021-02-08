@@ -46,8 +46,6 @@ val roomModule = module {
 val viewModelModule = module {
     viewModel { RestaurantActivityViewModel() }
     viewModel { RestaurantFragmentViewModel(get(), get()) }
-//    single { RestaurantActivityViewModel() }
-//    single { RestaurantFragmentViewModel(get(), get()) }
 }
 
 val modules = module {
@@ -62,9 +60,6 @@ val modules = module {
     single {
         Room.databaseBuilder(androidContext(), RestaurantDatabase::class.java, "restaurant").build()
     }
-//    single { RestaurantActivityViewModel() }
-//    single { RestaurantFragmentViewModel(get(), get()) }
-
 }
 
 private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {

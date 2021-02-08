@@ -38,6 +38,9 @@ class RestaurantFragmentViewModel(
                 onLoaderInteractionRequestedLiveData.value = true
                 loadRestaurants()
             }
+        } else {
+            val list = onRestaurantsLoadedLiveData.value
+            onRestaurantsLoadedLiveData.value = list
         }
     }
 

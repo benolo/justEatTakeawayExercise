@@ -2,6 +2,7 @@ package com.justeattakeawayexercise.ui.restaurants.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.observe
 import com.justeattakeawayexercise.R.id
 import com.justeattakeawayexercise.R.layout
@@ -26,14 +27,21 @@ class RestaurantActivity : AppCompatActivity() {
 
     private fun showRestaurantFragment(show: Boolean) {
         if (show) {
-            supportFragmentManager
-                .beginTransaction()
-                .replace(
-                    id.content_container,
-                    RestaurantFragment.newInstance(),
-                    RestaurantFragment.TAG
-                )
-                .commit()
+            val f = supportFragmentManager.findFragmentByTag(RestaurantFragment.TAG)
+            if (f == null) {
+                supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        id.content_container,
+                        RestaurantFragment.newInstance(),
+                        RestaurantFragment.TAG
+                    )
+                    .commit()
+            }
+            else {
+                supportFragmentManager.popBackStack(RestaurantFragment.TAG,
+                    FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            }
         }
     }
 
