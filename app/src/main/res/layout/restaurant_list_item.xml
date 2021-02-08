@@ -55,7 +55,7 @@
             tools:text="open"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"
-            android:textColor="@color/black"
+            android:textColor="@color/opening_state_selector"
             app:layout_constraintStart_toStartOf="@id/tv_restaurantName"
             app:layout_constraintTop_toBottomOf="@id/tv_minimumOrder"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -65,6 +65,7 @@
             android:id="@+id/iv_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/favorite_button_selector"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="10dp"

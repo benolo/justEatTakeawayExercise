@@ -36,15 +36,10 @@ class RestaurantAdapter(
 
         holderRestaurant.openState.let {
             it.text = setOpeningStateText(it.context, item.openingState)
+            it.isEnabled = item.openingState
         }
 
-        holderRestaurant.favoriteState.setImageResource(
-            if(item.isFavorite)  {
-                R.drawable.vec_favorite_selected
-            }
-            else{
-                R.drawable.vec_favorite_unselected
-            })
+        holderRestaurant.favoriteState.isSelected = item.isFavorite
 
         holderRestaurant.favoriteState.setOnClickListener {
             restaurantItemClickListener.onItemFavoriteButtonClicked(position)
@@ -60,14 +55,12 @@ class RestaurantAdapter(
             .fit()
             .centerInside()
             .into(view)
-
-
     }
 
     private fun setOpeningStateText(context: Context, openingState: Boolean): String {
         val openingStateResId =
             if(openingState)  R.string.open_state_opened
-            else R.string.open_state_opened
+            else R.string.open_state_closed
 
         return context.getString(openingStateResId)
     }

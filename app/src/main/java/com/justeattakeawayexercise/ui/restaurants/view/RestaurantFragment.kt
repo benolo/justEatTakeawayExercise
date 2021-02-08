@@ -57,13 +57,13 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         viewModel.onItemChangedLiveData.observe(viewLifecycleOwner) { updateItemAtPosition(it) }
     }
 
-    private fun updateItemAtPosition(itemPosition: Int) {
-        adapter.notifyItemChanged(itemPosition)
-    }
+    private fun updateItemAtPosition(position: Int) = adapter.notifyItemChanged(position)
 
     private fun initViews() {
         layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         restaurantsRecycler.layoutManager = layoutManager
+        restaurantsRecycler.setHasFixedSize(true)
+        restaurantsRecycler.itemAnimator?.changeDuration = 0;
         restaurantsRecycler.addItemDecoration(
             DividerItemDecoration(
                 context,

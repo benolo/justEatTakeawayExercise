@@ -12,5 +12,5 @@ data class RestaurantItem(
 
     val openingState: Boolean,
 
-    val isFavorite: Boolean
+    var isFavorite: Boolean
 )

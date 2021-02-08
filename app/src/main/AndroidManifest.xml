@@ -12,10 +12,10 @@
         android:supportsRtl="true"
         android:name=".BaseApplication"
         android:theme="@style/Theme.JustEatTakeAwayExercise">
+
         <activity android:name="com.justeattakeawayexercise.ui.restaurants.view.RestaurantActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

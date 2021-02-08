@@ -1,6 +1,5 @@
 package com.justeattakeawayexercise.ui.restaurants.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,17 +41,14 @@ class RestaurantFragmentViewModel(
         }
     }
 
-    private suspend fun fetchFavorites() :List<Int> {
-       return withContext(Dispatchers.IO) {
-           Log.d("benben", "In withContext fetchFavorites [${Thread.currentThread().name}]")
+    private suspend fun fetchFavorites(): List<Int> {
+        return withContext(Dispatchers.IO) {
             return@withContext repository.getFavorites()
         }
     }
 
-    private suspend fun fetchRestaurants() : List<Restaurant>{
-        Log.d("benben", "fetch restaurants invoked")
+    private suspend fun fetchRestaurants(): List<Restaurant> {
         return withContext(Dispatchers.IO) {
-            Log.d("benben", "In withContext fetchRestaurants [${Thread.currentThread().name}]")
             return@withContext repository.getData()
         }
     }
@@ -68,33 +64,29 @@ class RestaurantFragmentViewModel(
         }
 
     private suspend fun loadRestaurants() {
-        Log.d("benben", "load restaurants invoked")
         val allRestaurants = fetchRestaurants()
-        Log.d("benben", "all restaurants are: $allRestaurants")
         val allFavorites = fetchFavorites()
-        Log.d("benben", "all favorites are: $allFavorites")
         val resultList = restaurantsMapper.apply(allFavorites, allRestaurants)
 
         withContext(Dispatchers.Main) {
-            Log.d("benben", "Fire live data load restaurants [${Thread.currentThread().name}]\n: $resultList")
             onLoaderInteractionRequestedLiveData.value = false
             onRestaurantsLoadedLiveData.value = resultList
         }
     }
 
     fun onFavoriteClicked(position: Int) {
-        Log.d("benben", "onfavorite item clicked")
         val itemClicked = onRestaurantsLoadedLiveData.value?.get(position)
         if (itemClicked != null) {
             viewModelScope.launch(Dispatchers.Main) {
                 // Need to delete it from favorites
                 if (itemClicked.isFavorite) {
-                    insertRestaurant(itemClicked.restaurantId)
+                    deleteRestaurant(itemClicked.restaurantId)
                 }
                 // Need to insert it as favorite
                 else {
-                    deleteRestaurant(itemClicked.restaurantId)
+                    insertRestaurant(itemClicked.restaurantId)
                 }
+                itemClicked.isFavorite = !itemClicked.isFavorite
                 onItemChangedLiveData.value = position
             }
         }
