@@ -20,27 +20,26 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
-//    factory { provideOkHttpClient() }
-//    single { provideRetrofit(get()) }
+    factory { provideOkHttpClient() }
+    single { provideRetrofit(get()) }
+    factory { provideApiService(get()) }
 }
 
 val dataModule = module {
-//    single { RestaurantsRemoteDataSource(get(), Mapper()) }
-//    single { RestaurantLocalDataSource(get()) }
-//    single { RepositoryImpl(get(), get()) }
+    single { RestaurantsRemoteDataSource(get(), Mapper()) }
+    single { RestaurantLocalDataSource(get()) }
+    single { RepositoryImpl(get(), get()) }
+    factory { RestaurantMapper() }
 }
 
 val resourceModule = module {
-//    single { BaseApplication() }
-//    single { ResourceProvider(get()) }
+    single { BaseApplication() }
 }
 
 val roomModule = module {
-//    single { Room.databaseBuilder(get(), RestaurantDatabase::class.java, "restaurant") }
-//    single { get<RestaurantDatabase>().restaurantDao() }
-
-
-//    single { Room.databaseBuilder(androidContext(), RestaurantDatabase::class.java, "restaurant").build() }
+    single {
+        Room.databaseBuilder(androidContext(), RestaurantDatabase::class.java, "restaurant")
+            .build() }
 }
 
 val viewModelModule = module {
@@ -48,19 +47,6 @@ val viewModelModule = module {
     viewModel { RestaurantFragmentViewModel(get(), get()) }
 }
 
-val modules = module {
-    factory { provideOkHttpClient() }
-    single { provideRetrofit(get()) }
-    factory { provideApiService(get()) }
-    single { RestaurantsRemoteDataSource(get(), Mapper()) }
-    single { RestaurantLocalDataSource(get()) }
-    single { RepositoryImpl(get(), get()) }
-    single { BaseApplication() }
-    factory { RestaurantMapper() }
-    single {
-        Room.databaseBuilder(androidContext(), RestaurantDatabase::class.java, "restaurant").build()
-    }
-}
 
 private fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
     return Retrofit.Builder()

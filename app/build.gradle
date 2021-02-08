@@ -50,8 +50,8 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.ktx_core}"
     implementation "androidx.activity:activity-ktx:${versions.activity_ktx}"
     implementation "androidx.fragment:fragment-ktx:${versions.fragment_ktx}"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
 
     // App compat
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
@@ -78,12 +78,10 @@ dependencies {
     kapt "androidx.room:room-compiler:${versions.room}"
 
     // Koin for Android
-//    implementation "org.koin:koin-android:${versions.koin}"
     implementation "org.koin:koin-androidx-scope:${versions.koin}"
     implementation "org.koin:koin-androidx-viewmodel:${versions.koin}"
     implementation "org.koin:koin-androidx-fragment:${versions.koin}"
     implementation "org.koin:koin-androidx-compose:${versions.koin}"
-    // Koin AndroidX Experimental features
     implementation "org.koin:koin-androidx-ext:${versions.koin}"
 
     // Coroutines
