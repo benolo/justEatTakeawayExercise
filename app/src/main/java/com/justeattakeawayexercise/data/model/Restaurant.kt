@@ -2,7 +2,7 @@ package com.justeattakeawayexercise.data.model
 
 data class Restaurant(
 
-    val id: Int = -1,
+    val id: Int,
 
     val name: String,
 

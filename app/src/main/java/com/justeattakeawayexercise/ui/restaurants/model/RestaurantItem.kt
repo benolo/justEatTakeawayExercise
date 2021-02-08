@@ -2,11 +2,13 @@ package com.justeattakeawayexercise.ui.restaurants.model
 
 data class RestaurantItem(
 
-    val coverageImageUri: String,
+    val restaurantId: Int,
+
+    val coverageImageUri: String?,
 
     val restaurantName: String,
 
-    val minimumOrder: String,
+    val minimumOrder: Int,
 
     val openingState: Boolean,
 

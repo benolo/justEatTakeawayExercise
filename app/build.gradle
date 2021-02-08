@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 apply from: 'network.gradle'
 
@@ -50,6 +50,7 @@ dependencies {
     implementation "androidx.core:core-ktx:${versions.ktx_core}"
     implementation "androidx.activity:activity-ktx:${versions.activity_ktx}"
     implementation "androidx.fragment:fragment-ktx:${versions.fragment_ktx}"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 
     // App compat
     implementation "androidx.appcompat:appcompat:${versions.appcompat}"
@@ -77,15 +78,17 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${versions.rxAndroid}"
 
     // Room
-    implementation "android.arch.persistence.room:runtime:${versions.room}"
-    kapt "android.arch.persistence.room:compiler:${versions.room}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
 
     // Koin for Android
     implementation "org.koin:koin-android:${versions.koin}"
+    implementation "org.koin:koin-androidx-scope:${versions.koin}"
+    implementation "org.koin:koin-androidx-viewmodel:${versions.koin}"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutines}"
-//    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutines}"
 
     // 3rd party libraries
     implementation "com.jakewharton.timber:timber:${versions.timber}"

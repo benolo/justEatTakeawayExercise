@@ -1,37 +1,32 @@
 package com.justeattakeawayexercise.ui.restaurants.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.justeattakeawayexercise.R
-import com.justeattakeawayexercise.provider.ResourceProvider
-import com.justeattakeawayexercise.ui.restaurants.model.ToolbarEntity
 
-class RestaurantActivityViewModel(private val resourceProvider: ResourceProvider): ViewModel() {
+class RestaurantActivityViewModel : ViewModel() {
 
-    val toolbarEntityLiveData: MutableLiveData<ToolbarEntity> = MutableLiveData()
     val loaderInteractionRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val showRestaurantFragmentLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val showRestaurantFragmentLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val onExitRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     private var isStarted = false
 
     fun start() {
-        if(!isStarted) {
-            setToolbar()
-            showRestaurantFragmentLiveData.value = null
-            loaderInteractionRequestedLiveData.value = true
+        if (!isStarted) {
+            isStarted = true
+            Log.d("benben", "activity viewmodel started")
+            showRestaurantFragmentLiveData.value = true
+            onLoaderInteractionRequested(true)
         }
     }
 
-    private fun setToolbar() {
-        toolbarEntityLiveData.value =
-            ToolbarEntity(resourceProvider.getString(R.string.toolbarTitle), R.drawable.vect_back)
+    fun onLoaderInteractionRequested(show: Boolean) {
+        Log.d("benben", "onloader interaction called in activity viewmodel with $show")
+        loaderInteractionRequestedLiveData.value = show
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
-
-    fun onToolbarButtonClicked() {
-
+    fun onBackPressed() {
+        onExitRequestedLiveData.value = true
     }
 }

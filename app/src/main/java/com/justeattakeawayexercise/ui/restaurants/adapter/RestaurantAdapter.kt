@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.justeattakeawayexercise.R
+import com.justeattakeawayexercise.data.model.Restaurant
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItem
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItemClickListener
 import com.squareup.picasso.Picasso
 
 
-class RestaurantItemAdapter(
+class RestaurantAdapter(
     private var restaurantItemList: List<RestaurantItem>,
     private val restaurantItemClickListener: RestaurantItemClickListener
 ) :RecyclerView.Adapter<RestaurantItemRecyclerViewHolder>() {
@@ -31,14 +32,15 @@ class RestaurantItemAdapter(
 
         holderRestaurant.name.text = item.restaurantName
 
-        holderRestaurant.minimumOrder.text = item.minimumOrder
+        holderRestaurant.minimumOrder.text =
+            setMinimumOrderText(holderRestaurant.minimumOrder.context, item.minimumOrder)
 
         holderRestaurant.openState.let {
             it.text = setOpeningStateText(it.context, item.openingState)
         }
 
         holderRestaurant.favoriteState.setImageResource(
-            if(item.openingState)  {
+            if(item.isFavorite)  {
                 R.drawable.vec_favorite_selected
             }
             else{
@@ -65,6 +67,15 @@ class RestaurantItemAdapter(
             else R.string.open_state_opened
 
         return context.getString(openingStateResId)
+    }
+
+    private fun setMinimumOrderText(context: Context, minimumOrderAmount: Int): String {
+        return String.format(context.getString(R.string.minimum_order_pattern), minimumOrderAmount)
+    }
+
+    fun setData(restaurantsList: List<RestaurantItem>) {
+        restaurantItemList = restaurantsList
+        notifyDataSetChanged()
     }
 
     override fun getItemCount() = restaurantItemList.size

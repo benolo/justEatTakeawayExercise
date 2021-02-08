@@ -1,8 +1,8 @@
-package com.justeattakeawayexercise.data
+package com.justeattakeawayexercise.data.source.remote
 
 import com.justeattakeawayexercise.data.model.Restaurant
 
-interface MyRepository {
+interface RestaurantDataSource {
 
     suspend fun getData(): List<Restaurant>
 }
