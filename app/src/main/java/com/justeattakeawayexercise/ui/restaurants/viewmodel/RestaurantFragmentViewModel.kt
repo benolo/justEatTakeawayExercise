@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-private const val TAG = "MainViewModel"
+private const val TAG = "RestaurantFragmentViewModel"
 
 class RestaurantFragmentViewModel(
     private val repository: RepositoryImpl,
@@ -21,14 +21,19 @@ class RestaurantFragmentViewModel(
 ) : ViewModel() {
 
     val onRestaurantsLoadedLiveData: MutableLiveData<List<RestaurantItem>> = MutableLiveData()
+    val showNoResultsLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val onItemChangedLiveData: MutableLiveData<Int> = MutableLiveData()
     val onLoaderInteractionRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     private var isStarted = false
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-        Timber.tag(TAG).e("Coroutine exception catch error[${throwable}]")
-        throwable.printStackTrace()
+
+        viewModelScope.launch(Dispatchers.Main) {
+            showNoResultsLiveData.value = true
+            Timber.tag(TAG).e("Coroutine exception catch error[${throwable}]")
+            throwable.printStackTrace()
+        }
     }
 
     fun start() {
@@ -72,8 +77,9 @@ class RestaurantFragmentViewModel(
         val resultList = restaurantsMapper.apply(allFavorites, allRestaurants)
 
         withContext(Dispatchers.Main) {
+            if(resultList.isEmpty())  showNoResultsLiveData.value = true
+            else onRestaurantsLoadedLiveData.value = resultList
             onLoaderInteractionRequestedLiveData.value = false
-            onRestaurantsLoadedLiveData.value = resultList
         }
     }
 

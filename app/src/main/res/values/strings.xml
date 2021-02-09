@@ -4,4 +4,5 @@
     <string name="open_state_closed">Closed</string>
     <string name="toolbarTitle">Browse restaurants</string>
     <string name="minimum_order_pattern">Minimum order value: %d</string>
+    <string name="loader_text">Matching the best for you</string>
 </resources>

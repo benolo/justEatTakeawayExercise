@@ -55,6 +55,7 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         viewModel.onLoaderInteractionRequestedLiveData.observe(viewLifecycleOwner) { showLoader(it) }
         viewModel.onRestaurantsLoadedLiveData.observe(viewLifecycleOwner) { showRestaurantList(it) }
         viewModel.onItemChangedLiveData.observe(viewLifecycleOwner) { updateItemAtPosition(it) }
+        viewModel.showNoResultsLiveData.observe(viewLifecycleOwner) { showEmptyState(it) }
     }
 
     private fun updateItemAtPosition(position: Int) = adapter.notifyItemChanged(position)
@@ -85,6 +86,17 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         progressBar.visibility =
             if (show) View.VISIBLE
             else View.GONE
+    }
+
+    private fun showEmptyState(show: Boolean) {
+        if (show) {
+            resultsGroup.visibility = View.GONE
+            emptyState.visibility = View.VISIBLE
+        }
+        else {
+            resultsGroup.visibility = View.VISIBLE
+            emptyState.visibility = View.GONE
+        }
     }
 
     override fun onItemFavoriteButtonClicked(position: Int) {

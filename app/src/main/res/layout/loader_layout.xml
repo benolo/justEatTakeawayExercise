@@ -5,14 +5,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ProgressBar
+        android:id="@+id/progressRoller"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/white"
         android:indeterminate="true"
-        android:indeterminateTint="@color/black"
+        android:indeterminateTint="@color/just_eat_color"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/progressRoller"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/just_eat_color"
+        android:textSize="15sp"
+        android:text="@string/loader_text"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
