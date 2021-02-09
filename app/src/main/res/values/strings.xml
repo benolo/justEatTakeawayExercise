@@ -5,6 +5,6 @@
     <string name="toolbarTitle">Browse restaurants</string>
     <string name="minimum_order_pattern">Minimum order value: %d</string>
     <string name="loader_text">Matching the best for you</string>
-    <string name="menu_mock_request_text">Mock on next load</string>
-    <string name="menu_un_mock_request_text">Un-Mock on next load</string>
+    <string name="menu_mock_request_text">Mock data</string>
+    <string name="menu_un_mock_request_text">Back to real</string>
 </resources>

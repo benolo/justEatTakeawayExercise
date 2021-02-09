@@ -112,9 +112,14 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
     }
 
     private fun showLoader(show: Boolean) {
-        progressBar.visibility =
-            if (show) View.VISIBLE
-            else View.GONE
+        if(show) {
+            progressBar.visibility = View.VISIBLE
+            restaurantsRecycler.visibility = View.GONE
+        }
+        else {
+            progressBar.visibility = View.GONE
+            restaurantsRecycler.visibility = View.VISIBLE
+        }
     }
 
     private fun showEmptyState(show: Boolean) {

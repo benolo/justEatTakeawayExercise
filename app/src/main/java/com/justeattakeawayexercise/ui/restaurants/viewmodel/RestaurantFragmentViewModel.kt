@@ -92,10 +92,12 @@ class RestaurantFragmentViewModel(
 
     fun onMockModeMenuClicked() {
         isMockMode = !isMockMode
-        viewModelScope.launch() {
+        onLoaderInteractionRequestedLiveData.value = true
+        viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 repository.setMockMode(isMockMode)
                 updateMenuText()
+                loadRestaurants()
             }
         }
     }
