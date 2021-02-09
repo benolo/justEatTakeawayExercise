@@ -1,8 +1,10 @@
 <resources>
-    <string name="app_name">JustEatTakeAwayExercise</string>
+    <string name="app_name">JustEat Exercise</string>
     <string name="open_state_opened">Open</string>
     <string name="open_state_closed">Closed</string>
     <string name="toolbarTitle">Browse restaurants</string>
     <string name="minimum_order_pattern">Minimum order value: %d</string>
     <string name="loader_text">Matching the best for you</string>
+    <string name="menu_mock_request_text">Mock on next load</string>
+    <string name="menu_un_mock_request_text">Un-Mock on next load</string>
 </resources>

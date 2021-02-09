@@ -7,5 +7,6 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET(BuildConfig.API_URL)
-    suspend fun getIt(): RestaurantsInfoRaw
+    suspend fun getRestaurants(): RestaurantsInfoRaw
+
 }

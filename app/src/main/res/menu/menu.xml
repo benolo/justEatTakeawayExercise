@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/mock_request"
+        android:title="@string/menu_mock_request_text"
+        app:showAsAction="ifRoom|withText"/>
+</menu>

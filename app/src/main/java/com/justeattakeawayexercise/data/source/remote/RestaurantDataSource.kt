@@ -4,5 +4,5 @@ import com.justeattakeawayexercise.data.model.Restaurant
 
 interface RestaurantDataSource {
 
-    suspend fun getData(): List<Restaurant>
+    suspend fun getRestaurants(): List<Restaurant>
 }

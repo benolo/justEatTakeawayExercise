@@ -4,7 +4,7 @@ import com.justeattakeawayexercise.data.model.Restaurant
 
 interface Repository {
 
-    suspend fun getData(): List<Restaurant>
+    suspend fun getRestaurants(): List<Restaurant>
 
     suspend fun getFavorites(): List<Int>
 
@@ -13,4 +13,6 @@ interface Repository {
     suspend fun insertRestaurant(restaurantId: Int)
 
     suspend fun deleteRestaurant(restaurantId: Int)
+
+    suspend fun setMockMode(enabled: Boolean)
 }

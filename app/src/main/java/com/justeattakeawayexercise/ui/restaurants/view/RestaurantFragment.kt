@@ -1,9 +1,7 @@
 package com.justeattakeawayexercise.ui.restaurants.view
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,12 +22,18 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
 
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var adapter: RestaurantAdapter
+    private lateinit var menu: Menu
 
     companion object {
 
         const val TAG = "RestaurantFragment"
 
         fun newInstance() = RestaurantFragment()
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -45,10 +49,26 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         observe()
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViews()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+        this.menu = menu
+        viewModel.onMenuItemLoaded()
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.mock_request -> {
+                viewModel.onMockModeMenuClicked()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun observe() {
@@ -56,6 +76,15 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         viewModel.onRestaurantsLoadedLiveData.observe(viewLifecycleOwner) { showRestaurantList(it) }
         viewModel.onItemChangedLiveData.observe(viewLifecycleOwner) { updateItemAtPosition(it) }
         viewModel.showNoResultsLiveData.observe(viewLifecycleOwner) { showEmptyState(it) }
+        viewModel.onMenuItemTextChangedLiveData.observe(viewLifecycleOwner) { updateMenuText(it) }
+    }
+
+    private fun updateMenuText(menuTestResId: Int) {
+        if (::menu.isInitialized) {
+            menu.findItem(R.id.mock_request)?.let {
+                it.title = getString(menuTestResId)
+            }
+        }
     }
 
     private fun updateItemAtPosition(position: Int) = adapter.notifyItemChanged(position)
@@ -92,14 +121,11 @@ class RestaurantFragment : Fragment(), RestaurantItemClickListener {
         if (show) {
             resultsGroup.visibility = View.GONE
             emptyState.visibility = View.VISIBLE
-        }
-        else {
+        } else {
             resultsGroup.visibility = View.VISIBLE
             emptyState.visibility = View.GONE
         }
     }
 
-    override fun onItemFavoriteButtonClicked(position: Int) {
-        viewModel.onFavoriteClicked(position)
-    }
+    override fun onItemFavoriteButtonClicked(position: Int) = viewModel.onFavoriteClicked(position)
 }

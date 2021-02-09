@@ -2,15 +2,21 @@ package com.justeattakeawayexercise.data
 
 import com.justeattakeawayexercise.data.model.Restaurant
 import com.justeattakeawayexercise.data.source.local.RestaurantLocalDataSource
+import com.justeattakeawayexercise.data.source.mock.MockLocalDataSource
 import com.justeattakeawayexercise.data.source.remote.RestaurantsRemoteDataSource
 
 class RepositoryImpl(
     private val dataSource: RestaurantsRemoteDataSource,
-    private val favoritesDataSource: RestaurantLocalDataSource
+    private val favoritesDataSource: RestaurantLocalDataSource,
+    private val mockLocalDataSource: MockLocalDataSource,
+    private val mockModeProvider: MockModeProvider
 ) : Repository {
 
-    override suspend fun getData(): List<Restaurant> {
-        return dataSource.getData()
+    override suspend fun getRestaurants(): List<Restaurant> {
+        if(mockModeProvider.isMockMode()) {
+            return mockLocalDataSource.getMockRestaurants()
+        }
+        return dataSource.getRestaurants()
     }
 
     override suspend fun getFavorites(): List<Int> {
@@ -27,5 +33,9 @@ class RepositoryImpl(
 
     override suspend fun deleteRestaurant(restaurantId: Int) {
         return favoritesDataSource.deleteRestaurant(restaurantId)
+    }
+
+    override suspend fun setMockMode(enabled: Boolean) {
+        mockLocalDataSource.setMockMode(enabled)
     }
 }

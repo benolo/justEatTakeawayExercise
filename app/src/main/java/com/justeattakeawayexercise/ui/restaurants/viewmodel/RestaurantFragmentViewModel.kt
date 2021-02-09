@@ -3,29 +3,31 @@ package com.justeattakeawayexercise.ui.restaurants.viewmodel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.justeattakeawayexercise.R
+import com.justeattakeawayexercise.data.MockModeProvider
 import com.justeattakeawayexercise.data.RepositoryImpl
 import com.justeattakeawayexercise.data.model.Restaurant
 import com.justeattakeawayexercise.ui.restaurants.mapper.RestaurantMapper
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItem
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import timber.log.Timber
 
 private const val TAG = "RestaurantFragmentViewModel"
 
 class RestaurantFragmentViewModel(
     private val repository: RepositoryImpl,
-    private val restaurantsMapper: RestaurantMapper
+    private val restaurantsMapper: RestaurantMapper,
+    private val mockModeProvider: MockModeProvider
 ) : ViewModel() {
 
     val onRestaurantsLoadedLiveData: MutableLiveData<List<RestaurantItem>> = MutableLiveData()
     val showNoResultsLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val onItemChangedLiveData: MutableLiveData<Int> = MutableLiveData()
     val onLoaderInteractionRequestedLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val onMenuItemTextChangedLiveData: MutableLiveData<Int> = MutableLiveData()
 
     private var isStarted = false
+    private var isMockMode = false
 
     private val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
 
@@ -59,7 +61,7 @@ class RestaurantFragmentViewModel(
 
     private suspend fun fetchRestaurants(): List<Restaurant> {
         return withContext(Dispatchers.IO) {
-            return@withContext repository.getData()
+            return@withContext repository.getRestaurants()
         }
     }
 
@@ -82,9 +84,19 @@ class RestaurantFragmentViewModel(
 
     private suspend fun dispatchRestaurants(restaurantList: List<RestaurantItem>?) {
         withContext(Dispatchers.Main) {
-            if(restaurantList.isNullOrEmpty())  showNoResultsLiveData.value = true
+            if (restaurantList.isNullOrEmpty()) showNoResultsLiveData.value = true
             else onRestaurantsLoadedLiveData.value = restaurantList
             onLoaderInteractionRequestedLiveData.value = false
+        }
+    }
+
+    fun onMockModeMenuClicked() {
+        isMockMode = !isMockMode
+        viewModelScope.launch() {
+            withContext(Dispatchers.IO) {
+                repository.setMockMode(isMockMode)
+                updateMenuText()
+            }
         }
     }
 
@@ -103,6 +115,30 @@ class RestaurantFragmentViewModel(
                 itemClicked.isFavorite = !itemClicked.isFavorite
                 onItemChangedLiveData.value = position
             }
+        }
+    }
+
+    fun onMenuItemLoaded() {
+        viewModelScope.launch { setMenuUpdatedText() }
+    }
+
+    private suspend fun getIsMockMode() =
+        withContext(Dispatchers.IO) {
+            mockModeProvider.isMockMode()
+        }
+
+    private suspend fun setMenuUpdatedText() {
+        withContext(Dispatchers.Main) {
+            isMockMode = getIsMockMode()
+            updateMenuText()
+        }
+    }
+
+    private suspend fun updateMenuText() {
+        withContext(Dispatchers.Main) {
+            onMenuItemTextChangedLiveData.value =
+                if (isMockMode) R.string.menu_un_mock_request_text
+                else R.string.menu_mock_request_text
         }
     }
 
