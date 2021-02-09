@@ -45,7 +45,9 @@ class RestaurantFragmentViewModel(
             }
         } else {
             val list = onRestaurantsLoadedLiveData.value
-            onRestaurantsLoadedLiveData.value = list
+            viewModelScope.launch(exceptionHandler + Dispatchers.Main) {
+                dispatchRestaurants(list)
+            }
         }
     }
 
@@ -75,10 +77,13 @@ class RestaurantFragmentViewModel(
         val allRestaurants = fetchRestaurants()
         val allFavorites = fetchFavorites()
         val resultList = restaurantsMapper.apply(allFavorites, allRestaurants)
+        dispatchRestaurants(resultList)
+    }
 
+    private suspend fun dispatchRestaurants(restaurantList: List<RestaurantItem>?) {
         withContext(Dispatchers.Main) {
-            if(resultList.isEmpty())  showNoResultsLiveData.value = true
-            else onRestaurantsLoadedLiveData.value = resultList
+            if(restaurantList.isNullOrEmpty())  showNoResultsLiveData.value = true
+            else onRestaurantsLoadedLiveData.value = restaurantList
             onLoaderInteractionRequestedLiveData.value = false
         }
     }
