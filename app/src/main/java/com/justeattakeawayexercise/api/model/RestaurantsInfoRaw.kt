@@ -2,6 +2,9 @@ package com.justeattakeawayexercise.api.model
 
 import com.google.gson.annotations.SerializedName
 
+/**
+ * Raw data representing the item scheme from the server
+ */
 data class RestaurantsInfoRaw(
     @SerializedName("restaurants")
     val restaurants: List<RestaurantRaw>?

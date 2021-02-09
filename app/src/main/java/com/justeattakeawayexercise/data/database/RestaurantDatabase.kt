@@ -5,6 +5,10 @@ import androidx.room.RoomDatabase
 import com.justeattakeawayexercise.data.database.model.MockEntity
 import com.justeattakeawayexercise.data.database.model.RestaurantEntity
 
+/**
+ * Database representation, with its tables
+ *
+ */
 @Database(entities = [RestaurantEntity::class, MockEntity::class], version = 1)
 abstract class RestaurantDatabase : RoomDatabase() {
     abstract fun restaurantDao(): RestaurantDao

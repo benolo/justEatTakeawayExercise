@@ -1,7 +1,6 @@
 android {
 
     defaultConfig {
-        // Misc Strings
         buildConfigField("String", "API_URL", "\"https://my-json-server.typicode.com/gilgoldzweig/SampleTest/db/\"")
     }
 }

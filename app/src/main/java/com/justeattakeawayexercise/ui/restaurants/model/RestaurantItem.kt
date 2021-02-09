@@ -1,5 +1,8 @@
 package com.justeattakeawayexercise.ui.restaurants.model
 
+/**
+ * Ui data object representation
+ */
 data class RestaurantItem(
 
     val restaurantId: Int,

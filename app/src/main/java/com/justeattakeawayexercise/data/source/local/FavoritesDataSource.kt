@@ -1,5 +1,8 @@
 package com.justeattakeawayexercise.data.source.local
 
+/**
+ * Favorite restaurants data source api
+ */
 interface FavoritesDataSource {
 
     suspend fun getFavorites(): List<Int>
