@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.justeattakeawayexercise.R
 import com.justeattakeawayexercise.data.MockModeProvider
 import com.justeattakeawayexercise.data.RepositoryImpl
-import com.justeattakeawayexercise.data.model.Restaurant
 import com.justeattakeawayexercise.ui.restaurants.mapper.RestaurantMapper
 import com.justeattakeawayexercise.ui.restaurants.model.RestaurantItem
 import kotlinx.coroutines.*
@@ -53,33 +52,21 @@ class RestaurantFragmentViewModel(
         }
     }
 
-    private suspend fun fetchFavorites(): List<Int> {
-        return withContext(Dispatchers.IO) {
-            return@withContext repository.getFavorites()
-        }
-    }
+    private suspend fun fetchFavorites() = repository.getFavorites()
 
-    private suspend fun fetchRestaurants(): List<Restaurant> {
-        return withContext(Dispatchers.IO) {
-            return@withContext repository.getRestaurants()
-        }
-    }
+    private suspend fun fetchRestaurants() = repository.getRestaurants()
 
-    private suspend fun insertRestaurant(restaurantId: Int) =
-        withContext(Dispatchers.IO) {
-            return@withContext repository.insertRestaurant(restaurantId)
-        }
+    private suspend fun insertRestaurant(restaurantId: Int) = repository.insertRestaurant(restaurantId)
 
-    private suspend fun deleteRestaurant(restaurantId: Int) =
-        withContext(Dispatchers.IO) {
-            return@withContext repository.deleteRestaurant(restaurantId)
-        }
+    private suspend fun deleteRestaurant(restaurantId: Int) = repository.deleteRestaurant(restaurantId)
 
     private suspend fun loadRestaurants() {
-        val allRestaurants = fetchRestaurants()
-        val allFavorites = fetchFavorites()
-        val resultList = restaurantsMapper.apply(allFavorites, allRestaurants)
-        dispatchRestaurants(resultList)
+        viewModelScope.launch(Dispatchers.IO) {
+            val allRestaurants = async { fetchRestaurants() }
+            val allFavorites = async { fetchFavorites() }
+            val resultList = restaurantsMapper.apply(allFavorites.await(), allRestaurants.await())
+            dispatchRestaurants(resultList)
+        }
     }
 
     private suspend fun dispatchRestaurants(restaurantList: List<RestaurantItem>?) {
@@ -108,11 +95,11 @@ class RestaurantFragmentViewModel(
             viewModelScope.launch(Dispatchers.Main) {
                 // Need to delete it from favorites
                 if (itemClicked.isFavorite) {
-                    deleteRestaurant(itemClicked.restaurantId)
+                    launch(Dispatchers.IO) { deleteRestaurant(itemClicked.restaurantId) }
                 }
                 // Need to insert it as favorite
                 else {
-                    insertRestaurant(itemClicked.restaurantId)
+                    launch(Dispatchers.IO) { insertRestaurant(itemClicked.restaurantId) }
                 }
                 itemClicked.isFavorite = !itemClicked.isFavorite
                 onItemChangedLiveData.value = position
@@ -120,17 +107,12 @@ class RestaurantFragmentViewModel(
         }
     }
 
-    fun onMenuItemLoaded() {
-        viewModelScope.launch { setMenuUpdatedText() }
-    }
+    fun onMenuItemLoaded() = viewModelScope.launch { setMenuUpdatedText() }
 
-    private suspend fun getIsMockMode() =
-        withContext(Dispatchers.IO) {
-            mockModeProvider.isMockMode()
-        }
+    private suspend fun getIsMockMode() = mockModeProvider.isMockMode()
 
     private suspend fun setMenuUpdatedText() {
-        withContext(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             isMockMode = getIsMockMode()
             updateMenuText()
         }
